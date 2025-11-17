@@ -52,6 +52,7 @@ interface GoogleMapsPropsExtended {
     opt_scroll: boolean;
     opt_streetview: boolean;
     opt_zoomcontrol: boolean;
+    opt_fullscreencontrol: boolean;
     opt_tilt: string;
     legendEnabled: boolean;
     legendHeaderText?: string;
@@ -408,6 +409,8 @@ const Map: React.FC<GoogleMapsPropsExtended> = (props) => {
                         disableDefaultUI={true}
                         onClick={onMapClick}
                         onZoomChanged={onMapClick}
+                        fullscreenControl={props.opt_fullscreencontrol}
+
 
                     >
                         {infowindowData && (
@@ -498,21 +501,5 @@ const Map: React.FC<GoogleMapsPropsExtended> = (props) => {
         </>
     );
 };
-// Custom comparison function
-const areEqual = (prevProps: GoogleMapsPropsExtended, nextProps: GoogleMapsPropsExtended) => {
-    if (!prevProps.locations || !nextProps.locations || prevProps.locations.length !== nextProps.locations.length) {
-        console.debug("areEqual: false");
-        return false;
-    }
-
-    for (let i = 0; i < prevProps.locations.length; i++) {
-        if (prevProps.locations[i].guid !== nextProps.locations[i].guid) {
-            console.debug("areEqual: false");
-            return false;
-        }
-    }
-    console.debug("areEqual: true")
-    return true;
-};
 // Wrap the component with React.memo and pass the custom comparison function
-export default React.memo(Map, areEqual);
+export default React.memo(Map);

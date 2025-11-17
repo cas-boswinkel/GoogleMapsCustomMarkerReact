@@ -1,7 +1,7 @@
 {
   "name": "googlemapscustommarker",
   "widgetName": "GoogleMapsCustomMarker",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "An extension to the default Mendix Maps widget for showing point locations on a Google Map. It offers heaps of extra features like dropping/dragging and clustering",
   "copyright": "Apache v2",
   "author": "Ivo Sturm",

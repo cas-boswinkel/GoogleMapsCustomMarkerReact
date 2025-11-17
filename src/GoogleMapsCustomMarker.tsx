@@ -39,6 +39,7 @@ export default class GoogleMapsCustomMarker extends Component<GoogleMapsCustomMa
                 opt_streetview={this.props.opt_streetview}
                 opt_zoomcontrol={this.props.opt_zoomcontrol}
                 opt_tilt={this.props.opt_tilt}
+                opt_fullscreencontrol={this.props.opt_fullscreencontrol}
                 apiKey={this.props.apiAccessKey}
                 defaultLat={this.props.defaultLat}
                 defaultLng={this.props.defaultLng}

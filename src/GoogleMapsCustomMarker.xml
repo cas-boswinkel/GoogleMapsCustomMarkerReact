@@ -328,6 +328,10 @@
 					<caption>Zoom Control</caption>
 					<description>Enable/disable Zoom control</description>
 				</property>
+				<property key="opt_fullscreencontrol" type="boolean" defaultValue="true">
+					<caption>Fullscreen Control</caption>
+					<description>Enable/disable Fullscreen control</description>
+				</property>
 				<property key="opt_tilt" type="enumeration" defaultValue="d0">
 					<caption>Tilt</caption>
 					<description>Angle of the map. This can be set to 45 degrees, if this is available for some locations and only when using type Satellite or Hybrid. It will automatically switch to 0 degrees if it is not available.</description>

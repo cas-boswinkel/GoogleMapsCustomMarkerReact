@@ -80,6 +80,7 @@ export interface GoogleMapsWidgetProps {
     opt_scroll: boolean;
     opt_streetview: boolean;
     opt_zoomcontrol: boolean;
+    opt_fullscreencontrol: boolean;
     opt_tilt: string;
     styleArray: string;
     legendEnabled: boolean;
@@ -107,24 +108,7 @@ interface GoogleMapsContainerProps extends GoogleMapsWidgetProps {
     locations: MarkerProps[];
 }
 
-// Custom deep comparison function
-const areEqual = (prevProps: GoogleMapsContainerProps, nextProps: GoogleMapsContainerProps) => {
-    if (!prevProps.markerObjects || !prevProps.markerObjects.items || !nextProps.markerObjects || !nextProps.markerObjects.items || prevProps.markerObjects.items.length !== nextProps.markerObjects.items.length) {
-        console.debug("areEqual: false");
-        return false;
-    }
-
-    for (let i = 0; i < prevProps.markerObjects.items.length; i++) {
-        if (prevProps.markerObjects.items[i].id !== nextProps.markerObjects.items[i].id) {
-            console.debug("areEqual: false");
-            return false;
-        }
-    }
-    console.debug("areEqual: true");
-    return true;
-};
-
-export const GoogleMapsContainer: React.FC<GoogleMapsContainerProps> = (props) => {
+export const GoogleMapsContainer = (props: GoogleMapsContainerProps) => {
     let mxObjects: ObjectItem[] = [];
     const logNode: string = "Google Maps Custom Marker (React) widget: ";
     let _lineCoordinateList: PositionProps[] = [];
@@ -316,6 +300,7 @@ export const GoogleMapsContainer: React.FC<GoogleMapsContainerProps> = (props) =
                     opt_streetview={props.opt_streetview}
                     opt_tilt={props.opt_tilt}
                     opt_zoomcontrol={props.opt_zoomcontrol}
+                    opt_fullscreencontrol={props.opt_fullscreencontrol}
                     styleArray={props.styleArray}
                     legendEnabled={props.legendEnabled}
                     legendHeaderText={props.legendHeaderText}
@@ -340,4 +325,4 @@ export const GoogleMapsContainer: React.FC<GoogleMapsContainerProps> = (props) =
 }
 
 // Wrap the component with React.memo and pass the custom comparison function
-export default React.memo(GoogleMapsContainer, areEqual);
+export default React.memo(GoogleMapsContainer);
