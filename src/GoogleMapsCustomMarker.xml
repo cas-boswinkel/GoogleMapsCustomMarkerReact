@@ -342,9 +342,13 @@
 				</property> 
 			</propertyGroup>
 			<propertyGroup caption="Map Styling">
+				<property key="mapId" type="string" required="false">
+					<caption>Map ID</caption>
+					<description>The Map ID to use for Cloud-based maps styling. This replaces the deprecated styleArray property.</description>
+				</property>
 				<property key="styleArray" type="string" multiline="true" required="false">
-					<caption>Style Array</caption>
-					<description>Use this to add custom styles to your maps.</description>
+					<caption>Style Array (Deprecated)</caption>
+					<description>Use this to add custom styles to your maps. DEPRECATED: Use Map ID instead.</description>
 				</property>
 			</propertyGroup>
 		</propertyGroup>

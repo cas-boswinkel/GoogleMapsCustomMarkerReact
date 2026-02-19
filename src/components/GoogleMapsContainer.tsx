@@ -83,6 +83,7 @@ export interface GoogleMapsWidgetProps {
     opt_fullscreencontrol: boolean;
     opt_tilt: string;
     styleArray: string;
+    mapId: string;
     legendEnabled: boolean;
     legendHeaderText?: string;
     legendEntries?: LegendEntriesType[];
@@ -114,7 +115,7 @@ export const GoogleMapsContainer = (props: GoogleMapsContainerProps) => {
     let _lineCoordinateList: PositionProps[] = [];
     let legendByIcons = false;
     let lineOptions: google.maps.PolylineOptions = {};
-    
+
     // Initialize map dimensions
     if (props.mapWidth === 10000) {
         containerStyle.width = "100%";
@@ -132,17 +133,17 @@ export const GoogleMapsContainer = (props: GoogleMapsContainerProps) => {
     }
 
     let draggable = false,
-    isNew = false,
-    lat = Number(props.defaultLat),
-    lng = Number(props.defaultLng),
-    opacity = 1,
-    name = "",
-    icon: string,
-    iconImage: DynamicValue<WebImage>,
-    color: string,
-    symbol: string,
-    size: string,
-    formattedAddress: string;
+        isNew = false,
+        lat = Number(props.defaultLat),
+        lng = Number(props.defaultLng),
+        opacity = 1,
+        name = "",
+        icon: string,
+        iconImage: DynamicValue<WebImage>,
+        color: string,
+        symbol: string,
+        size: string,
+        formattedAddress: string;
 
     // create locations
     // showing of infowindow is handled via state, if shown, don't recreate already existing objects
@@ -153,7 +154,7 @@ export const GoogleMapsContainer = (props: GoogleMapsContainerProps) => {
                 editable = true;
                 if (props.draggableInEditMode) {
                     draggable = true;
-                    console.debug(logNode +  "marker is draggable.");
+                    console.debug(logNode + "marker is draggable.");
                 }
             }
         }
@@ -164,7 +165,7 @@ export const GoogleMapsContainer = (props: GoogleMapsContainerProps) => {
             draggable = /*!props.coordinatesStringAttr(mxObject).readOnly;
             editable = !props.coordinatesStringAttr(mxObject).readOnly;
             */
-            if (props.latAttr && props.lngAttr){
+            if (props.latAttr && props.lngAttr) {
                 lat = Number(props.latAttr.get(mxObject).value);
                 lng = Number(props.lngAttr.get(mxObject).value);
             }
@@ -196,7 +197,7 @@ export const GoogleMapsContainer = (props: GoogleMapsContainerProps) => {
             props.opacityAttr ? (opacity = Number(props.opacityAttr.get(mxObject).value)) : 0;
             props.formattedAddressAttrUpdate
                 ? (formattedAddress = String(props.formattedAddressAttrUpdate.value))
-                : "";   
+                : "";
 
             props.displayNameAttr ? (name = String(props.displayNameAttr.get(mxObject).value)) : "Location";
             // build up internal array to being able to show a Polyline
@@ -302,6 +303,7 @@ export const GoogleMapsContainer = (props: GoogleMapsContainerProps) => {
                     opt_zoomcontrol={props.opt_zoomcontrol}
                     opt_fullscreencontrol={props.opt_fullscreencontrol}
                     styleArray={props.styleArray}
+                    mapId={props.mapId}
                     legendEnabled={props.legendEnabled}
                     legendHeaderText={props.legendHeaderText}
                     legendIcons={props.markerImages}
@@ -319,7 +321,7 @@ export const GoogleMapsContainer = (props: GoogleMapsContainerProps) => {
                     lineOpacity={props.lineOpacity}
                     _lineCoordinateList={_lineCoordinateList}
                 ></Map>
-            </APIProvider>    
+            </APIProvider>
         </div>
     );
 }

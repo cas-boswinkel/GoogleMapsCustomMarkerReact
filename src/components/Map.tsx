@@ -1,11 +1,11 @@
-import { ControlPosition, Map as GoogleMap, InfoWindow, useApiIsLoaded, useMap  } from '@vis.gl/react-google-maps';
+import { ControlPosition, Map as GoogleMap, InfoWindow, useApiIsLoaded, useMap } from '@vis.gl/react-google-maps';
 import { useDrawingManager } from './DrawingManager';
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { ObjectItem, ListWidgetValue, EditableValue, ListActionValue } from "mendix";
 
 import InfoWindowComponent from "./InfoWindow";
 import { InfoWindowContent } from "./InfoWindowContent";
-import { geocodePosition, PositionProps, updateAttribute } from   "./MarkerUtils";                                                        
+import { geocodePosition, PositionProps, updateAttribute } from "./MarkerUtils";
 import { DefaultMapTypeEnum, LegendEntriesType, MarkerImagesType } from "../../typings/GoogleMapsCustomMarkerProps";
 import MarkerComponent, { MarkerProps } from "./Marker";
 import Legend from "./Legend";
@@ -42,7 +42,7 @@ interface GoogleMapsPropsExtended {
     MCMaxZoom: number;
     MCInfoWindowText: string;
     int_disableInfoWindow: boolean;
-    int_onClick?: ListActionValue; 
+    int_onClick?: ListActionValue;
     infoWindowWidget?: ListWidgetValue;
     zoomToCurrentLocation: boolean;
     overruleFitBoundsZoom: boolean;
@@ -71,6 +71,7 @@ interface GoogleMapsPropsExtended {
     lineOpacity: string;
     styleArray: string;
     _lineCoordinateList: PositionProps[];
+    mapId: string;
 }
 
 interface MapState {
@@ -102,8 +103,8 @@ const Map: React.FC<GoogleMapsPropsExtended> = (props) => {
 
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
 
-    const handleSearchBoxMounted = useCallback((searchBox: google.maps.places.SearchBox) => {  
-        console.debug(logNode + "searchbox mounted!");   
+    const handleSearchBoxMounted = useCallback((searchBox: google.maps.places.SearchBox) => {
+        console.debug(logNode + "searchbox mounted!");
         // Bias the Search
         map?.addListener("bounds_changed", () => {
             searchBox?.setBounds(map.getBounds() as google.maps.LatLngBounds);
@@ -153,11 +154,11 @@ const Map: React.FC<GoogleMapsPropsExtended> = (props) => {
     const [infowindowData, setInfowindowData] = useState<{
         anchor: google.maps.Marker;
         features: Feature<Point>[];
-      } | null>(null);
-    
+    } | null>(null);
+
     const handleInfoWindowClose = useCallback(
-    () => setInfowindowData(null),
-    [setInfowindowData]
+        () => setInfowindowData(null),
+        [setInfowindowData]
     );
 
     useEffect(() => {
@@ -167,14 +168,14 @@ const Map: React.FC<GoogleMapsPropsExtended> = (props) => {
                 // Reload or update the map
                 // Your map update logic here
                 console.debug(logNode + "locations changed, calling handleOnGoogleApiLoaded");
-                if (state.showingInfoWindow){
+                if (state.showingInfoWindow) {
                     console.debug(logNode + "closing infowindow...");
                     onInfoWindowClose();
                 }
                 handleOnGoogleApiLoaded(map)
-                // if only object is new, shouldn't have coordinates
+                    // if only object is new, shouldn't have coordinates
 
-;
+                    ;
             } else {
                 console.debug(logNode + "locations did not change, no update needed.");
             }
@@ -198,13 +199,13 @@ const Map: React.FC<GoogleMapsPropsExtended> = (props) => {
                     geocodePosition(latLng, props.formattedAddressAttrUpdate);
                 } catch (e) {
                     console.error(logNode + e);
-                }               
+                }
             }
         }
     }
     function clickHandler(event: any, location: MarkerProps) {
         const name = location.name
-        const position = location.position; 
+        const position = location.position;
         let pixelOffset: [number, number] = [0, -40];
 
         // adjust vertical offset to above marker depending on size/scale
@@ -225,22 +226,22 @@ const Map: React.FC<GoogleMapsPropsExtended> = (props) => {
                 pixelOffset[1] = -20
                 break;
         }
-            
+
         const mxObject = location.mxObject;
         // trigger infowindow functionality if enabled in interaction settings
 
         if (!props.int_disableInfoWindow && event && location.position) {
             console.debug(logNode + "clickHandler will start showing infowindow!");
             setState(prevState => ({
-                            ...prevState,
-                            showingInfoWindow: true,
-                            infowindowObj: {
-                                name,
-                                position,
-                                mxObject,
-                                pixelOffset // or any other appropriate value
-                            }
-                        }));
+                ...prevState,
+                showingInfoWindow: true,
+                infowindowObj: {
+                    name,
+                    position,
+                    mxObject,
+                    pixelOffset // or any other appropriate value
+                }
+            }));
         }
         // else trigger action call directly
         else if (mxObject && props.int_onClick) {
@@ -257,10 +258,10 @@ const Map: React.FC<GoogleMapsPropsExtended> = (props) => {
     };
     const onInfoWindowClose = () => {
         setState(prevState => ({
-                    ...prevState,
-                    showingInfoWindow: false,
-                    infowindowObj: {} as InfoWindowStateProps
-                }));
+            ...prevState,
+            showingInfoWindow: false,
+            infowindowObj: {} as InfoWindowStateProps
+        }));
     };
     const handleOnGoogleApiLoaded = (map: google.maps.Map) => {
         console.debug(logNode + "handleOnGoogleApiLoaded called! with isLoaded: " + isLoaded);
@@ -320,9 +321,9 @@ const Map: React.FC<GoogleMapsPropsExtended> = (props) => {
             geolocationCoordinates => {
                 console.debug(
                     logNode + "current location: lat:" +
-                        geolocationCoordinates.coords.latitude +
-                        ", lng: " +
-                        geolocationCoordinates.coords.longitude
+                    geolocationCoordinates.coords.latitude +
+                    ", lng: " +
+                    geolocationCoordinates.coords.longitude
                 );
                 const position = {
                     lat: geolocationCoordinates.coords.latitude,
@@ -337,166 +338,166 @@ const Map: React.FC<GoogleMapsPropsExtended> = (props) => {
                 //@ts-ignore
                 mx.ui.error("something went wrong with determining location: " + e.message, { modal: false });
                 console.error(logNode + "something went wrong with determining location", e);
-                
+
             },
             { timeout: 10000, enableHighAccuracy: true }
         );
     }
 
-        // Create the GeoJSON object
-        const geojson: FeatureCollection<Point> = {
-            type: 'FeatureCollection',
-            features: props.locations
-                ? props.locations
-                    .filter(location => !location.isNew && !(props.hideMarkers && props.showLines))
-                    .map(location => ({
-                        type: 'Feature',
-                        geometry: {
-                            type: 'Point',
-                            coordinates: [location.position.lng, location.position.lat]
-                        },
-                        properties: {
-                            isNew: false,
-                            key: "marker_" + location.guid,
-                            name: location.name,
-                            position: location.position,
-                            iconImage: location.iconImage,
-                            symbol: location.symbol,
-                            color: location.color,
-                            size: location.size,
-                            onClick: (event: google.maps.MapMouseEvent) => {
-                                console.debug(logNode + "triggering clickHandler from marker clustering!");
-                                clickHandler(
-                                    event,
-                                    location
-                                )
-                            },
-                            guid: location.guid,
-                            mxObject: location.mxObject,
-                            visible: location.visible
-                        }
-                    }))
-                : []
-        };
-        //if (map && isLoaded){
-            // if map already loaded before, calculate zoom and fitBounds again!
-            useDrawingManager(
-                null,
-                props.locations,
-                onMarkerComplete
-            );
-        //}
-        return (
-            <>
-                {isLoaded ? (
-                    <><GoogleMap
-                        mapId={'DEMO_MAP_ID'} // advanced markers need this feature. 
-                        defaultCenter={Object.keys(state.bounds).length === 0 ? state.center : { lat: state.bounds.getCenter().lat(), lng: state.bounds.getCenter().lng() }}
-                        defaultZoom={state.zoom}
-                        zoomControl={props.opt_zoomcontrol}
-                        zoomControlOptions={{
-                            position: google.maps.ControlPosition.RIGHT_CENTER
-                        }}
-                        scrollwheel={props.opt_scroll}
-                        streetViewControl={props.opt_streetview}
-                        gestureHandling={"greedy"}
-                        mapTypeId={google.maps.MapTypeId[props.defaultMapType as keyof typeof google.maps.MapTypeId] || google.maps.MapTypeId.ROADMAP}
-                        mapTypeControl={props.opt_mapcontrol}
-                        mapTypeControlOptions={{
-                            position: google.maps.ControlPosition.TOP_LEFT
-                        }}
-                        tilt={parseInt(props.opt_tilt.replace("d", ""), 10)}
-                        disableDefaultUI={true}
-                        onClick={onMapClick}
-                        onZoomChanged={onMapClick}
-                        fullscreenControl={props.opt_fullscreencontrol}
-
-
-                    >
-                        {infowindowData && (
-                            <InfoWindow
-                                onCloseClick={handleInfoWindowClose}
-                                anchor={infowindowData.anchor}>
-                                <InfoWindowContent features={infowindowData.features}
-                                    text={props.MCInfoWindowText} 
-                                />
-                            </InfoWindow>
-                        )}
-                        {props.legendEnabled && (
-                            <Legend
-                                ref={childLegend}
-                                title={props.legendHeaderText}
-                                legendByIcons={props.legendByIcons}
-                                legendIcons={props.legendIcons}
-                                legendEntries={props.legendEntries}
-                            ></Legend>
-                        )}
-                        {state.showingInfoWindow && (
-                            <InfoWindowComponent
-                                onCloseClick={onInfoWindowClose}
-                                name={state.infowindowObj.name}
-                                position={state.infowindowObj.position}
-                                pixelOffset={state.infowindowObj.pixelOffset}
-                                infoWindowWidget={props.infoWindowWidget}
-                                mxObject={state.infowindowObj.mxObject || ({} as ObjectItem)}
-                            ></InfoWindowComponent>
-                        )}
-                        {props.enableMarkerClusterer ? (
-                            <ClusteredMarkers geojson={geojson} setNumClusters={setNumClusters} setInfowindowData={setInfowindowData} />
-                        ) : (
-                            props.locations?.map(location => !location.isNew && !(props.hideMarkers && props.showLines) ? (
-                                <MarkerComponent
-                                    isNew={false}
-                                    key={"marker_" + location.guid}
-                                    name={location.name}
-                                    position={location.position}
-                                    iconImage={location.iconImage}
-                                    onClick={(e: google.maps.MapMouseEvent) => {
-                                        console.debug(logNode + "triggering clickHandler!");
-                                        clickHandler(e, location);
-                                    } }
-                                    guid={location.guid}
-                                    mxObject={location.mxObject}
-                                    visible={location.visible}
-                                    editable={location.editable}
-                                    draggable={location.draggable}
-                                    latAttrUpdate={props.latAttrUpdate}
-                                    lngAttrUpdate={props.lngAttrUpdate}
-                                    formattedAddressAttr={props.formattedAddressAttrUpdate}
-                                    symbol={location.symbol}
-                                    color={location.color}
-                                    size={location.size}
-                                    opacity={location.opacity} />
-                            ) : null
+    // Create the GeoJSON object
+    const geojson: FeatureCollection<Point> = {
+        type: 'FeatureCollection',
+        features: props.locations
+            ? props.locations
+                .filter(location => !location.isNew && !(props.hideMarkers && props.showLines))
+                .map(location => ({
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [location.position.lng, location.position.lat]
+                    },
+                    properties: {
+                        isNew: false,
+                        key: "marker_" + location.guid,
+                        name: location.name,
+                        position: location.position,
+                        iconImage: location.iconImage,
+                        symbol: location.symbol,
+                        color: location.color,
+                        size: location.size,
+                        onClick: (event: google.maps.MapMouseEvent) => {
+                            console.debug(logNode + "triggering clickHandler from marker clustering!");
+                            clickHandler(
+                                event,
+                                location
                             )
-                        )}
+                        },
+                        guid: location.guid,
+                        mxObject: location.mxObject,
+                        visible: location.visible
+                    }
+                }))
+            : []
+    };
+    //if (map && isLoaded){
+    // if map already loaded before, calculate zoom and fitBounds again!
+    useDrawingManager(
+        null,
+        props.locations,
+        onMarkerComplete
+    );
+    //}
+    return (
+        <>
+            {isLoaded ? (
+                <><GoogleMap
+                    mapId={props.mapId} // advanced markers need this feature.  
+                    defaultCenter={Object.keys(state.bounds).length === 0 ? state.center : { lat: state.bounds.getCenter().lat(), lng: state.bounds.getCenter().lng() }}
+                    defaultZoom={state.zoom}
+                    zoomControl={props.opt_zoomcontrol}
+                    zoomControlOptions={{
+                        position: google.maps.ControlPosition.RIGHT_CENTER
+                    }}
+                    scrollwheel={props.opt_scroll}
+                    streetViewControl={props.opt_streetview}
+                    gestureHandling={"greedy"}
+                    mapTypeId={google.maps.MapTypeId[props.defaultMapType as keyof typeof google.maps.MapTypeId] || google.maps.MapTypeId.ROADMAP}
+                    mapTypeControl={props.opt_mapcontrol}
+                    mapTypeControlOptions={{
+                        position: google.maps.ControlPosition.TOP_LEFT
+                    }}
+                    tilt={parseInt(props.opt_tilt.replace("d", ""), 10)}
+                    disableDefaultUI={true}
+                    onClick={onMapClick}
+                    onZoomChanged={onMapClick}
+                    fullscreenControl={props.opt_fullscreencontrol}
 
-                        {props.showLines ? (
-                            <Polyline
-                                path={props._lineCoordinateList}
-                                geodesic={props.lineOptions.geodesic}
-                                strokeColor={props.lineOptions.strokeColor}
-                                strokeOpacity={props.lineOptions.strokeOpacity}
-                                strokeWeight={props.lineOptions.strokeWeight}
-                                icons={props.lineOptions.icons ? props.lineOptions.icons.filter((icon): icon is google.maps.IconSequence => icon.icon != null) : []} />
-                        ) : null}
-                        {props.searchBoxEnabled && (
-                            <>
-                                <CustomMapControl
-                                    controlPosition={ControlPosition.TOP}
-                                    onPlaceSelect={setSelectedPlace}
-                                    onSearchBoxMounted={handleSearchBoxMounted}
-                                    center={state.center}
-                                    placeholder={props.searchBoxPlaceholder}
-                                />
-                                <MapHandler place={selectedPlace} />
-                            </>
-                        )}
-                    </GoogleMap>
-                    </>
-                    ) : (
-                        <div className="spinner" />
+
+                >
+                    {infowindowData && (
+                        <InfoWindow
+                            onCloseClick={handleInfoWindowClose}
+                            anchor={infowindowData.anchor}>
+                            <InfoWindowContent features={infowindowData.features}
+                                text={props.MCInfoWindowText}
+                            />
+                        </InfoWindow>
                     )}
+                    {props.legendEnabled && (
+                        <Legend
+                            ref={childLegend}
+                            title={props.legendHeaderText}
+                            legendByIcons={props.legendByIcons}
+                            legendIcons={props.legendIcons}
+                            legendEntries={props.legendEntries}
+                        ></Legend>
+                    )}
+                    {state.showingInfoWindow && (
+                        <InfoWindowComponent
+                            onCloseClick={onInfoWindowClose}
+                            name={state.infowindowObj.name}
+                            position={state.infowindowObj.position}
+                            pixelOffset={state.infowindowObj.pixelOffset}
+                            infoWindowWidget={props.infoWindowWidget}
+                            mxObject={state.infowindowObj.mxObject || ({} as ObjectItem)}
+                        ></InfoWindowComponent>
+                    )}
+                    {props.enableMarkerClusterer ? (
+                        <ClusteredMarkers geojson={geojson} setNumClusters={setNumClusters} setInfowindowData={setInfowindowData} />
+                    ) : (
+                        props.locations?.map(location => !location.isNew && !(props.hideMarkers && props.showLines) ? (
+                            <MarkerComponent
+                                isNew={false}
+                                key={"marker_" + location.guid}
+                                name={location.name}
+                                position={location.position}
+                                iconImage={location.iconImage}
+                                onClick={(e: google.maps.MapMouseEvent) => {
+                                    console.debug(logNode + "triggering clickHandler!");
+                                    clickHandler(e, location);
+                                }}
+                                guid={location.guid}
+                                mxObject={location.mxObject}
+                                visible={location.visible}
+                                editable={location.editable}
+                                draggable={location.draggable}
+                                latAttrUpdate={props.latAttrUpdate}
+                                lngAttrUpdate={props.lngAttrUpdate}
+                                formattedAddressAttr={props.formattedAddressAttrUpdate}
+                                symbol={location.symbol}
+                                color={location.color}
+                                size={location.size}
+                                opacity={location.opacity} />
+                        ) : null
+                        )
+                    )}
+
+                    {props.showLines ? (
+                        <Polyline
+                            path={props._lineCoordinateList}
+                            geodesic={props.lineOptions.geodesic}
+                            strokeColor={props.lineOptions.strokeColor}
+                            strokeOpacity={props.lineOptions.strokeOpacity}
+                            strokeWeight={props.lineOptions.strokeWeight}
+                            icons={props.lineOptions.icons ? props.lineOptions.icons.filter((icon): icon is google.maps.IconSequence => icon.icon != null) : []} />
+                    ) : null}
+                    {props.searchBoxEnabled && (
+                        <>
+                            <CustomMapControl
+                                controlPosition={ControlPosition.TOP}
+                                onPlaceSelect={setSelectedPlace}
+                                onSearchBoxMounted={handleSearchBoxMounted}
+                                center={state.center}
+                                placeholder={props.searchBoxPlaceholder}
+                            />
+                            <MapHandler place={selectedPlace} />
+                        </>
+                    )}
+                </GoogleMap>
+                </>
+            ) : (
+                <div className="spinner" />
+            )}
 
         </>
     );

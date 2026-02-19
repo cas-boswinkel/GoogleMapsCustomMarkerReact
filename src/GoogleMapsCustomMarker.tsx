@@ -48,6 +48,7 @@ export default class GoogleMapsCustomMarker extends Component<GoogleMapsCustomMa
                 lowestZoom={this.props.lowestZoom}
                 locations={[]}
                 styleArray={this.props.styleArray}
+                mapId={this.props.mapId}
                 legendEnabled={this.props.legendEnabled}
                 legendEntries={this.props.legendEntries}
                 legendHeaderText={this.props.legendHeaderText}

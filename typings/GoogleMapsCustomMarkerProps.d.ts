@@ -93,7 +93,9 @@ export interface GoogleMapsCustomMarkerContainerProps {
     opt_scroll: boolean;
     opt_streetview: boolean;
     opt_zoomcontrol: boolean;
+    opt_fullscreencontrol: boolean;
     opt_tilt: Opt_tiltEnum;
+    mapId: string;
     styleArray: string;
 }
 
@@ -155,6 +157,8 @@ export interface GoogleMapsCustomMarkerPreviewProps {
     opt_scroll: boolean;
     opt_streetview: boolean;
     opt_zoomcontrol: boolean;
+    opt_fullscreencontrol: boolean;
     opt_tilt: Opt_tiltEnum;
+    mapId: string;
     styleArray: string;
 }
